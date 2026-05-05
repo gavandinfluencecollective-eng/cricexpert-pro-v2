@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "Match": {
+      "title": "Cricket Match",
+      "description": "Represents a cricket match with its details.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "match_type": { "type": "string" },
+        "status": { "type": "string" },
+        "venue": { "type": "string" },
+        "date": { "type": "string" },
+        "team_home": { "type": "string" },
+        "team_away": { "type": "string" },
+        "toss": { "type": "string" },
+        "lastUpdated": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "status"]
+    },
+    "Player": {
+      "title": "Cricket Player",
+      "description": "Details about a cricket player in a specific match.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "team": { "type": "string" },
+        "role": { "type": "string", "enum": ["batsman", "bowler", "allrounder", "wicketkeeper"] },
+        "recent_form": { "type": "number" },
+        "credits": { "type": "number" },
+        "selection_percentage": { "type": "number" }
+      },
+      "required": ["id", "name", "team", "role"]
+    },
+    "FantasyTeam": {
+      "title": "Fantasy Team",
+      "description": "An AI-generated fantasy team.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "matchId": { "type": "string" },
+        "type": { "type": "string", "enum": ["Safe", "GL", "Extreme GL", "Experimental"] },
+        "playerIds": { "type": "array", "items": { "type": "string" } },
+        "captainId": { "type": "string" },
+        "viceCaptainId": { "type": "string" },
+        "winProbability": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["matchId", "type", "playerIds", "captainId", "viceCaptainId"]
+    }
+  },
+  "firestore": {
+    "/matches": {
+      "schema": "Match",
+      "description": "Collection of all cricket matches fetched from the API."
+    },
+    "/matches/{matchId}/players": {
+      "schema": "Player",
+      "description": "Players participating in a specific match."
+    },
+    "/matches/{matchId}/teams": {
+      "schema": "FantasyTeam",
+      "description": "AI-generated fantasy teams for a match."
+    }
+  }
+}
